@@ -5,62 +5,44 @@
         html, body{
           width: 100%;
         }
+        body{
+          min-height: 100%;
+        }
         .second-row {
           background-color: aliceblue;
-          height: 250px;
+          height: auto;
           width:  95%;
           color: black;
+          padding: 40px;
           margin: auto;
           display: flex;
+          flex-wrap: wrap;
           justify-content: space-evenly;
           align-items: center;
           margin-top: 70px;
         }
         .card{
-            width: 200px;
+            width: 300px;
 
             text-align: center;
-            height: 200px;
+            
         }
         .card:hover{
         cursor: pointer;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        .card img{
+          width: 300px;
+          height: 312px;
+        }
+        .w-100{
+          height: 36em;
         }
     </style>
   
 {% endblock %}
 {% block body %}
 {% load static %}
-<!--here start of canvas -->
-<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-  Link with href
-</a>
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-  Button with data-bs-target
-</button>
-
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div>
-      Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-    </div>
-    <div class="dropdown mt-3">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-        Dropdown button
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!--Here end of ofcanvas ok-->
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -69,21 +51,21 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src='{%static "dream/hello.png"%}' class="d-block w-100" alt="...">
+      <img src='{%static "dream/hello.jpg"%}' class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5>First slide label</h5>
         <p>Some representative placeholder content for the first slide.</p>
       </div>
     </div>
     <div class="carousel-item">
-      <img src='{%static "dream/hello2.png"%}' class="d-block w-100" alt="...">
+      <img src='{%static "dream/hello5.jpg"%}' class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5>Second slide label</h5>
         <p>Some representative placeholder content for the second slide.</p>
       </div>
     </div>
     <div class="carousel-item">
-      <img src='{%static "dream/hello4.png"%}' class="d-block w-100" alt="...">
+      <img src='{%static "dream/hello1.jpg"%}' class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5>Third slide label</h5>
         <p>Some representative placeholder content for the third slide.</p>
@@ -105,11 +87,11 @@
 
   <div class="second-row">
       <div class="card">
-        <img src="..." class="card-img-top" alt="...">
+        <img src="/media/{{product.0.image}}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{product.0.product_name}}</h5>
           <p class="card-text">{{product.0.desc}}</p>
-          <a href="#" class="btn btn-primary">Add to cart</a>
+          <button id="pr{{product.0.id}}" class="btn btn-primary cart">Add to cart</button>
         </div>
       </div>
       {% for j in product|slice:"1:" %}
@@ -117,11 +99,11 @@
       </div><div class="second-row">
       {% endif %}
       <div class="card">
-        <img src="..." class="card-img-top" alt="...">
+        <img src="/media/{{j.image}}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{j.product_name}}</h5>
           <p class="card-text">{{j.desc}}</p>
-          <a href="#" class="btn btn-primary">Add to cart</a>
+          <button id="pr{{j.id}}" class="btn btn-primary cart">Add to cart</button>
         </div>
       </div>
       {% endfor %}
@@ -130,6 +112,38 @@
   
   </ul>
 
+  {% endblock %}
+  {% block js %} 
+  <script>
+    console.log('working');
+    if (localStorage.getItem('cart')==null)
+    {
+      var cart={};
+    }
+    else{
+      cart=JSON.parse(localStorage.getItem('cart'));
+      document.getElementById('cart').innerHTML=Object.keys(cart).length;
+    }
+    $('.cart').click(function(){
+      console.log('clicked');
+      var idstr= this.id.toString();
+      console.log(idstr);
+      if (cart[idstr]!=undefined)
+      {
+        cart[idstr]=cart[idstr]+1;
+      }
+      else{
+        cart[idstr]=1;
+      }
+      console.log(cart);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      document.getElementById('cart').innerHTML=Object.keys(cart).length;
+    });
+    
+
+
+  </script>
+  
   {% endblock %}
   
 

@@ -5,10 +5,8 @@ from .models import  product
 # Create your views here.
 def index(request):
     products=product.objects.all()
-    print(products)
     n=len(products)
     nSlide =  n//3+ceil((n/3)-(n//3))
-    print(products[1])
     prams={"no_of_Slide": nSlide, "product": products, "range": range(nSlide), "data": int (3),}
 
     return render(request, 'dream/index.html', prams)

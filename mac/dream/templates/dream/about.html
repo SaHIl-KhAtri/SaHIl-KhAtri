@@ -1,9 +1,53 @@
 {% extends 'dream/basic.html' %}
 {% block style %}
 <style>
-    body{
-        min-height: 100%;
-    }
+    *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    main{
+            width: 90vw;
+            margin: 0 auto;
+            padding: 30px 20px;
+            min-height: calc(100vh - 56px - 80px);
+        }
+        article {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+
+        }
+        article:last-child{
+            margin-bottom: 0;
+        }
+        article h3{
+            margin: 10px 0 25px 0;
+        }
+        article p{
+            margin-top: 16px;
+            line-height: 24px;
+
+        }
 </style>
 {% endblock %}
 {% block title%}About{% endblock%}
+{% block body %}
+<body>
+    <main>
+        <article>
+            <h2>
+            Title Deading
+            </h2>
+            <h3>
+                Title Description =Mar 10, 2021
+            </h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate dolores accusamus cumque tenetur earum tempore dolore eius, ducimus voluptatem impedit aut et incidunt repellat non libero suscipit reiciendis. Obcaecati, ex!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia ab fugiat quod quo tenetur voluptatum maiores voluptatem impedit tempora, porro atque nostrum aliquam, animi odit dicta eos accusamus sed et.0</p>
+            
+        </article>
+          
+    </main></body>
+
+{% endblock %}
